@@ -1,0 +1,54 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/focal64"
+  config.vm.boot_timeout = 3600 # 60 minutes
+  config.vm.provider "virtualbox" do |vb|
+     # Display the VirtualBox GUI when booting the machine
+     vb.gui = true
+     vb.memory = 4096
+     vb.cpus = 7
+  end
+
+$provisionscript = <<-HEREDOC
+    sudo apt-get update
+    sudo apt-get upgrade -y
+    sudo apt-get install -y git
+    sudo apt-get install -y vim
+    sudo apt-get install -y openssh-server
+    sudo apt-get -y install build-essential gettext help2man mscgen doxygen
+    sudo apt-get -y install help2man gettext automake bison build-essential flex libtool libxml2-dev libclutter-1.0-dev libglib2.0-dev libboost-all-dev libportmidi-dev
+    sudo apt-get -y install liblo0-dev liblog4cpp5-dev liblo0-dev libportmidi-dev libasound2-dev libavc1394-dev libboost-program-options-dev libboost-filesystem-dev libboost-thread-dev libboost-date-time-dev libboost-signals-dev libboost-system-dev liblo-dev libglew1.5-dev libglib2.0-dev libglu1-mesa-dev libraw1394-dev libstk0-dev libxv-dev
+    sudo apt-get -y install gstreamer1.0-plugins-base gstreamer1.0-plugins-base-apps
+ gstreamer1.0-plugins-good gstreamer1.0-alsa gstreamer1.0-plugins-bad gstreamer1.0-plugins-bad-videoparsers gstreamer1.0-plugins-ugly gstreamer1.0-tools gstreamer1.0-vaapi gstreamer1.0-x
+    # Video tools
+    sudo apt-get -y install ffmpeg mencoder vlc gstreamer-tools
+    # GStreamer plugins
+    sudo apt-get -y install gstreamer0.10-ffmpeg gstreamer0.10-plugins-bad gstreamer0.10-plugins-base gstreamer0.10-plugins-good gstreamer0.10-plugins-ugly gstreamer0.10-x
+    # Use OSC tools
+    sudo apt-get -y install python-txosc oscsend
+    # Process viewer
+    sudo apt-get -y install htop
+    # Python console
+    sudo apt-get -y install ipython
+
+    # Ubuntu / Debian packaging tools
+    sudo apt-get -y install cdbs git-buildpackage cowbuilder dput
+
+    sudo chown -R vagrant:vagrant /home/vagrant/*
+    mkdir /home/vagrant/Desktop
+    if [ -e /vagrant/id_rsa ]
+    then
+      sudo cp /vagrant/id_rsa ~/.ssh
+      sudo cp /vagrant/id_rsa.pub ~/.ssh
+      sudo cp /vagrant/known_hosts ~/.ssh
+      eval `ssh-agent -s`
+      ssh-add ~/.ssh/id_rsa
+      git clone git@github.com:mapmapteam/mapmap.git ~/src/mapmap
+      sudo shutdown -h now
+    else
+      git clone https://github.com/mapmapteam/mapmap.git ~/src/mapmap
+    fi
+HEREDOC
+
+  config.vm.provision "shell", inline: $provisionscript, privileged: false
+end
+
