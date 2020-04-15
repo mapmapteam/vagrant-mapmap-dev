@@ -1,0 +1,12 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "jorgemarta/Windows10Base"
+  config.vm.box_version = "1.2.0"
+  config.winrm.timeout = 1800 # 30 minutes
+  config.vm.boot_timeout = 3600 # 60 minutes
+  config.vm.provider "virtualbox" do |v|
+    v.gui = true
+    v.memory = 8192
+    v.cpus = 7
+  end
+end
+
