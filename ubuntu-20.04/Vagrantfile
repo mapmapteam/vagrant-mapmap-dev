@@ -12,22 +12,48 @@ $provisionscript = <<-HEREDOC
     sudo apt-get update
     sudo apt-get upgrade -y
 
-    sudo apt-get install -y build-essential git vim help2man htop
+    # Build tools and Qt5:
+    sudo apt-get install -y \
+        build-essential \
+        qttools5-dev-tools \
+        libqt5opengl5-dev \
+        libqt5multimedia5-dev \
+        libqt5multimedia5-plugins \
+        qt5-default
+
+    # Utilities:
+    sudo apt-get install -y \
+        git \
+        vim \
+        help2man \
+        markdown \
+        htop
+
     sudo apt-get -y install \
+        libglew-dev \
+        libglu1-mesa-dev \
         liblo-dev \
         liblo-tools \
-        libglew1.5-dev \
-        libglu1-mesa-dev \
         libraw1394-dev \
+        librtmidi-dev \
         libstk0-dev \
         libxv-dev
+
+    # Destop environment:
     sudo apt-get -y install \
+        xubuntu-desktop
+
+    # GStreamer:
+    sudo apt-get -y install \
+        gstreamer1.0-alsa \
+        gstreamer1.0-dev \
+        gstreamer1.0-plugins-bad \
+        gstreamer1.0-libav \
+        gstreamer1.0-vaapi \
+        gstreamer1.0-plugins-bad-videoparsers \
         gstreamer1.0-plugins-base \
         gstreamer1.0-plugins-base-apps \
         gstreamer1.0-plugins-good \
-        gstreamer1.0-alsa \
-        gstreamer1.0-plugins-bad \
-        gstreamer1.0-plugins-bad-videoparsers \
         gstreamer1.0-plugins-ugly \
         gstreamer1.0-tools \
         gstreamer1.0-vaapi \
@@ -36,8 +62,7 @@ $provisionscript = <<-HEREDOC
     sudo apt-get -y install \
         ffmpeg \
         mencoder \
-        vlc \
-        gstreamer-tools
+        vlc
 
     # Ubuntu / Debian packaging tools
     sudo apt-get -y install \
