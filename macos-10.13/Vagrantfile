@@ -1,0 +1,10 @@
+Vagrant.configure("2") do |config|
+  # See https://app.vagrantup.com/monsenso/boxes/macos-10.13
+  config.vm.box = "monsenso/macos-10.13"
+  config.vm.provider "virtualbox" do |v|
+    v.gui = true
+    v.memory = 8192
+    v.cpus = 7
+  end
+end
+
