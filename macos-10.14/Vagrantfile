@@ -1,0 +1,9 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "yzgyyang/macOS-10.14"
+  config.vm.provider "virtualbox" do |v|
+    v.gui = true
+    v.memory = 8192
+    v.cpus = 7
+  end
+end
+
